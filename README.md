@@ -455,7 +455,11 @@ Using the things learned in this workshop, can you develop a Lambda function tha
 
 2\. On the blueprints screen, search for "sns" in the blueprints search box. Select the blueprint titled **sns-message**, which is a Nodejs function.
 
-3\. On the next page, leave the event source type as "SNS". For the SNS topic selection, either select the SNS topic you created earlier (if you're working on this outside of a workshop) or if you are working in an AWS workshop, insert the shared SNS topic ARN provided to you by the AWS organizer. Click **Next**.
+3\. On the next page, leave the event source type as "SNS". For the SNS topic selection, either select the SNS topic you created earlier (if you're working on this outside of a workshop) or if you are working in an AWS workshop, insert the shared SNS topic ARN provided to you by the AWS organizer: 
+
+``` arn:aws:sns:us-west-2:011618953130:zombie-workshop ```
+
+Click **Next**.
 
 4\. On the "Configure Function" screen, name your function "[Your CloudFormation Stack Name]-sensor".
 
