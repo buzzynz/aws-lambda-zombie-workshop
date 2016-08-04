@@ -144,7 +144,7 @@ As you type, POST requests are being made to the Talkers DynamoDB table to conti
 
 * * *
 
-## Lab 3 - Search over the chat messages with Elasticsearch Service
+## Lab 2 - Search over the chat messages with Elasticsearch Service
 
 **What you'll do in this lab...**
 
@@ -253,7 +253,7 @@ Then on line 7, replace the **endpoint** variable that has a value of **ENDPOINT
 28\. Now with the IAM permissions in place, your messages posted in the chat from this point forward will be indexed to Elasticsearch. Post a few messages in the chat. You should be able to see that messages are being indexed in the "Indices" section for your cluster in the Elasticsearch Service console.
 ![API Gateway Invoke URL](/Images/Search-Done.png)
 
-**LAB 3 COMPLETE**
+**LAB 2 COMPLETE**
 
 If you would like to explore and search over the messages in the Kibana web UI that is provided with your cluster, you will need to navigate to the Elasticsearch domain you created and change the permissions. Currently you've configured the permissions so that only your AWS account has access. This allows your Lambda function to index messages into the cluster.
 
@@ -261,11 +261,11 @@ To use the web UI to build charts and search over the index, you will need to im
 
 * * *
 
-## Lab 4 - Slack Integration
+## Lab 3 - Slack Integration
 
 **What you'll do in this lab...**
 
-In this lab, you'll integrate a Slack channel with your survivor chat. There may be survivors who use different chat systems and you'll want to communicate with them! After completing this lab, survivors communicating on Slack can send messages to survivors in the Zombie Chat App by configuring a slash command prefix to be used on any messages in their Slack channel that they want to send to the survivors. When Slack users type messages with this Slash command, it will pass the message to your survivor chat API, similiar to the webhook functionality enabled in the Twilio lab!
+In this lab, you'll integrate a Slack channel with your survivor chat. There may be survivors who use different chat systems and you'll want to communicate with them! After completing this lab, survivors communicating on Slack can send messages to survivors in the Zombie Chat App by configuring a slash command prefix to be used on any messages in their Slack channel that they want to send to the survivors. When Slack users type messages with this Slash command, it will pass the message to your survivor chat API using Slack's webhook functionality!
 
 If you aren't familiar with Slack, they offer a free chat communications service that is popular, especially among the developer community. Slack uses a concept called "Channels" to distinguish different chat rooms. Visit their website to learn more!
 
@@ -319,7 +319,7 @@ If you aren't familiar with Slack, they offer a free chat communications service
 
 20\. Expand the **Body Mapping Templates** arrow and click **Add mapping template**. In the Content-Type box, enter **application/x-www-form-urlencoded** and click the little checkmark to continue. If a popup appears asking if you would like to secure the integration, click **Yes, secure this integration**. This ensures that only requests with the defined content-types will be allowed.
 
-As you did in the Twilio lab, we're going to copy VTL mapping logic to convert the request to JSON. A new section will appear on the right side of the screen with a dropdown for **Generate Template**. Click that dropdown and select **Method Request Passthrough**.
+You're going to copy VTL mapping logic to convert the request to JSON. A new section will appear on the right side of the screen with a dropdown for **Generate Template**. Click that dropdown and select **Method Request Passthrough**.
 
 In the text editor, delete all of the exiting VTL code and copy the following into the editor:
 
@@ -340,7 +340,7 @@ Click the grey **Save** button to continue. The result should look like the scre
 24\. You're ready to test out the Slash Command integration. In the team chat channel for your Slack account, type the Slash Command "/survivors" followed by a message. For example, type "/survivors Please help me I am stuck and zombies are trying to get me!". After sending it, you should get a confirmation response message from Slack Bot like the one below:
 ![Slack Command Success](/Images/Slack-Step24.png)
 
-**LAB 4 COMPLETE**
+**LAB 3 COMPLETE**
 
 Navigate to your zombie survivor chat app and you should see the message from Slack appear. You have configured Slack to send messages to your chat app!
 ![Slack Command in Chat App](/Images/Slack-Step25.png)
@@ -351,7 +351,7 @@ You've configured Slack to forward messages to your zombie survivor chat app. Bu
 
 * * *
 
-## Lab 5 - Motion Sensor Integration with Intel Edison and Grove
+## Lab 4 - Motion Sensor Integration with Intel Edison and Grove
 
 In this section, you'll help protect suvivors from zombies. Zombie motion sensor devices allow communities to determine if zombies (or intruders) are nearby. You'll setup a Lambda function to consume motion sensor events from an IoT device and push the messages into your chat application.
 
@@ -487,16 +487,14 @@ Using the things learned in this workshop, can you develop a Lambda function tha
 
 1\. To cleanup your environment, it is recommended to first delete these manual resources you created in the labs before deleting your CloudFormation stack, as there may be resource dependencies that stop the Stack from deleting. Follow steps 2-6 before deleting your Stack.
 
-2\. Be sure to delete the TwilioProcessing Lambda Function. Also if you no longer plan to use Twilio, please delete your Twilio free trial account and/or phone numbers that you provisioned.
+2\. Be sure to delete the Elasticsearch cluster and the associated Lambda function that you created for the Elasticsearch lab.
 
-3\. Be sure to delete the Elasticsearch cluster and the associated Lambda function that you created for the Elasticsearch lab.
+3\. Be sure to delete the Lambda function created as a part of the Slack lab and the Slack API resource you created. Also delete Slack if you no longer want an account.
 
-4\. Be sure to delete the Lambda function created as a part of the Slack lab and the Slack API resource you created. Also delete Slack if you no longer want an account.
+4\. Be sure to delete the SNS topic (if you created one) and the Lambda function that you created in the Zombie Sensor lab.
 
-5\. Be sure to delete the SNS topic (if you created one) and the Lambda function that you created in the Zombie Sensor lab.
+5\. Navigate to CloudWatch Logs and make sure to delete unnecessary Log Groups if they exist.   
 
-6\. Navigate to CloudWatch Logs and make sure to delete unnecessary Log Groups if they exist.   
-
-7\. Once those resources have been deleted, go to the CloudFormation console and find the Stack that you launched in the beginning of the workshop, select it, and click **Delete Stack**. When the stack has been successfully deleted, it should no longer display in the list of Active stacks. If you run into any issues deleting stacks, please notify a workshop instructor or contact [AWS Support](https://console.aws.amazon.com/support/home) for additional assistance.
+6\. Once those resources have been deleted, go to the CloudFormation console and find the Stack that you launched in the beginning of the workshop, select it, and click **Delete Stack**. When the stack has been successfully deleted, it should no longer display in the list of Active stacks. If you run into any issues deleting stacks, please notify a workshop instructor or contact [AWS Support](https://console.aws.amazon.com/support/home) for additional assistance.
 
 * * *
