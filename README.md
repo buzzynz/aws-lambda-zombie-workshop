@@ -167,7 +167,7 @@ In this lab you'll launch an Elasticsearch Service cluster and setup DynamoDB St
 
 7\. The creation of the Elasticsearch cluster takes approximately 10 minutes.
 
-*   Since it takes roughly 10 minutes to launch an Elasticsearch cluster, you can either wait for this launch before proceeding, or you can move on to Lab 4 and come back to finish this lab when the cluster is ready.
+*   Since it takes roughly 10 minutes to launch an Elasticsearch cluster, you can either wait for this launch before proceeding, or you can move on to Lab 3 and come back to finish this lab when the cluster is ready.
 
 8\. Take note of the Endpoint once the cluster starts, we'll need that for the Lambda function.
 ![API Gateway Invoke URL](/Images/Search-Step8.png)
@@ -176,7 +176,11 @@ In this lab you'll launch an Elasticsearch Service cluster and setup DynamoDB St
 
 10\. Select **Create a Lambda Function**.
 
-11\. Skip the Blueprint section by selecting the Skip button in the bottom right.
+11\. Skip the Blueprint section by selecting the Skip button in the bottom right. 
+
+12\. On the Configure Triggers page, select DynamoDB.
+
+13\. Select the **messages** DynamoDB table. It should appear as **"[Your CloudFormation stack name]-messages"** Select **Trim Horizon** as the **Starting Position**. Click **Next**
 
 12\. Give your function a name, such as **"[Your CloudFormation stack name]-ESsearch"**. Keep the runtime as Node.js 4.3. You can set a description for the function if you'd like.
 
@@ -188,32 +192,11 @@ Then on line 7, replace the **endpoint** variable that has a value of **ENDPOINT
 
 *   This step requires that your cluster is finished creating and in "Active" state before you'll have access to see the endpoint of your cluster.
 
-15\. Now you'll add an IAM role to your Lambda function. For the Role (you may need to navigate to the Configuration tab in Lambda to see this), create a new DynamoDB event stream role by clicking **DynamoDB event stream role** in the role dropdown. This will open a new page confirming that you want to create a role, just click **Allow** to proceed.
+15\. Below the code window, you'll add an IAM role to your Lambda function. Select **Create a custom role**, which opens a new window.
 
-16\. In the "Timeout" field for your Lambda function (you may need to visit the Configuration tab and Advanced Settings to see this), change the function timeout to **1** minute. This ensures Lambda can process the batch of messages before Lambda times out. Keep all the other defaults on the page set as is. Select **Next** and then on the Review page, select **Create function** to create your Lambda function.
+16\. In the new window, for **IAM Role** select **Create a new IAM role** and for **role name**, give your role a name for example **lambda_ddb_streams**. Expand **show policy document** and click **edit**
 
-17\. Select the "Event Sources" tab for the new **"[Your CloudFormation stack name]-ESsearch"** function that you created.
-
-18\. Select **Add event source**.
-
-19\. Select the DynamoDB Event source type and then select the **messages** DynamoDB table. It should appear as **"[Your CloudFormation stack name]-messages"** You can leave the rest as the defaults.
-
-20\. After creation, you should see an event source that is similar to the screenshot below:  
-![API Gateway Invoke URL](/Images/Search-Step20.png)
-
-21\. In the above step, we configured [DynamoDB Streams](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) to capture incoming messages on the table and trigger a Lambda function to push them to our Elasticsearch cluster.
-
-22\. The "lambda_dynamo_streams" role that you selected for your Lambda function earlier does not currently have permissions to write to your Elasticsearch cluster. We will configure that now.
-
-23\. Navigate to [Identity and Access Management](https://console.aws.amazon.com/iam/) in the AWS Management Console. The icon for this service is green and is listed under the "Security & Identity" section.
-
-24\. In the Identity and Access Management console, select the link for **Roles**.
-
-*   [IAM Roles](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html), similar to users, have permissions that you associate with them, which allows you to define what access can be granted to various entities. Roles can be assumed by EC2 Instances, Lambda Functions, and other applications and services.
-
-25\. In the "Filter" textbox on the Roles screen, type in **lambda_dynamo_streams** and click on the role. This is the role you assigned to your Lambda function earlier.
-
-26\. Scroll to the "Inline Policies" section where you will find a policy similar to "oneClick_lambda_dynamo_streams_xxxxxxxxxx". Click **Edit Policy** to edit the policy. Delete all the contents of the Inline Policy, and replace it with the policy block below:
+17\. Paste the below text into the policy, replacing the existing text, then click **Allow**:
 
 ```
 {
@@ -246,11 +229,16 @@ Then on line 7, replace the **endpoint** variable that has a value of **ENDPOINT
 }
 ```
 
-27\. Click the **Validate Policy** button and ensure that AWS returns a successful message "The Policy is valid". Then select **Apply Policy** to save it.
+18\. In the "Timeout" field for your Lambda function (you may need to visit the Configuration tab and Advanced Settings to see this), change the function timeout to **1** minute. This ensures Lambda can process the batch of messages before Lambda times out. Keep all the other defaults on the page set as is. 
 
-*   This new policy you have copied over includes a new Allow action, ```es:*``` which allows the role all actions on the Amazon Elasticsearch Service. In production it is recommended that you specify the actual ARN of the cluster you created instead of just any ES cluster, so that Lambda can only interact with that specific ES domain.
+19\.Select **Next** and then on the Review page, select **Create function** to create your Lambda function.
 
-28\. Now with the IAM permissions in place, your messages posted in the chat from this point forward will be indexed to Elasticsearch. Post a few messages in the chat. You should be able to see that messages are being indexed in the "Indices" section for your cluster in the Elasticsearch Service console.
+20\. After creation, you should see an event source that is similar to the screenshot below:  
+![API Gateway Invoke URL](/Images/Search-Step20.png)
+
+21\. In the above step, we configured [DynamoDB Streams](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) to capture incoming messages on the table and trigger a Lambda function to push them to our Elasticsearch cluster.
+
+22\. Now your messages posted in the chat from this point forward will be indexed to Elasticsearch. Post a few messages in the chat. You should be able to see that messages are being indexed in the "Indices" section for your cluster in the Elasticsearch Service console.
 ![API Gateway Invoke URL](/Images/Search-Done.png)
 
 **LAB 2 COMPLETE**
@@ -286,7 +274,7 @@ If you aren't familiar with Slack, they offer a free chat communications service
 
 7\. Click **Create a Lambda function**. You'll create a Lambda function to parse incoming Slack messages and send them to the Chat Service.
 
-8\. Skip past the blueprints page as we will not be using one.
+8\. Skip past the blueprints page as we will not be using one. Also skip past the Configure Triggers page
 
 9\. Give your function a name such as **"[Your CloudFormation Stack name]-SlackService"**. For the Nodejs version, you can keep the default Nodejs 4.3 selected. Now navigate to the GitHub repo for this workshop, or the location where you downloaded the GitHub files to your local machine.
 
