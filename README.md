@@ -186,15 +186,15 @@ In this lab you'll launch an Elasticsearch Service cluster and setup DynamoDB St
 
 13\. Paste in the code from the ZombieWorkshopSearchIndexing.js file provided to you. This is found in the Github repo in the "ElasticsearchLambda" folder.
 
-14\. On [line 6](/ElasticsearchLambda/ZombieWorkshopSearchIndexing.js#L6) in the code provided, replace **region** with the region code you are working in (the region you launched your stack, created your Lambda function etc).
+14\. On [line 6](/ElasticSearchLambda/ZombieWorkshopSearchIndexing.js#L6) in the code provided, replace **region** with the region code you are working in (the region you launched your stack, created your Lambda function etc).
 
 Then on line 7, replace the **endpoint** variable that has a value of **ENDPOINT_HERE** with the Elasticsearch endpoint created in step 8\. **Make sure the endpoint you paste starts with https://**.
 
 *   This step requires that your cluster is finished creating and in "Active" state before you'll have access to see the endpoint of your cluster.
 
-15\. Below the code window, you'll add an IAM role to your Lambda function. Select **Create a custom role**, which opens a new window.
+15\. Below the code window, you'll add an IAM role to your Lambda function. Select **Create a custom role**, which opens a new IAM window.
 
-16\. In the new window, for **IAM Role** select **Create a new IAM role** and for **role name**, give your role a name for example **lambda_ddb_streams**. Expand **show policy document** and click **edit**
+16\. In the new window, for **IAM Role** select **Create a new IAM role** and for **role name**, give your role a name for example **lambda_ddb_streams**. Expand **show policy document** and click **edit**. Dismiss the popup about reading the documentation.
 
 17\. Paste the below text into the policy, replacing the existing text, then click **Allow**:
 
@@ -228,6 +228,7 @@ Then on line 7, replace the **endpoint** variable that has a value of **ENDPOINT
     ]
 }
 ```
+The IAM window will then close, populating the role name in the Lambda window.
 
 18\. In the "Timeout" field for your Lambda function (you may need to visit the Configuration tab and Advanced Settings to see this), change the function timeout to **1** minute. This ensures Lambda can process the batch of messages before Lambda times out. Keep all the other defaults on the page set as is. 
 
@@ -236,9 +237,11 @@ Then on line 7, replace the **endpoint** variable that has a value of **ENDPOINT
 20\. After creation, you should see an event source that is similar to the screenshot below:  
 ![API Gateway Invoke URL](/Images/Search-Step20.png)
 
-21\. In the above step, we configured [DynamoDB Streams](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) to capture incoming messages on the table and trigger a Lambda function to push them to our Elasticsearch cluster.
+21\. Click **enable** at right, to enable the trigger.
 
-22\. Now your messages posted in the chat from this point forward will be indexed to Elasticsearch. Post a few messages in the chat. You should be able to see that messages are being indexed in the "Indices" section for your cluster in the Elasticsearch Service console.
+22\. In the above step, we configured [DynamoDB Streams](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) to capture incoming messages on the table and trigger a Lambda function to push them to our Elasticsearch cluster.
+
+23\. Now your messages posted in the chat from this point forward will be indexed to Elasticsearch. Post a few messages in the chat. You should be able to see that messages are being indexed in the "Indices" section for your cluster in the Elasticsearch Service console.
 ![API Gateway Invoke URL](/Images/Search-Done.png)
 
 **LAB 2 COMPLETE**
