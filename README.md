@@ -365,25 +365,35 @@ Using the things learned in this workshop, can you develop a Lambda function tha
 
 2\. On the blueprints screen, search for "sns" in the blueprints search box. Select the blueprint titled **sns-message**, which is a Nodejs function.
 
-3\. On the next page, leave the event source type as "SNS". For the SNS topic selection, either select the SNS topic you created earlier (if you're working on this outside of a workshop) or if you are working in an AWS workshop, insert the shared SNS topic ARN provided to you by the AWS organizer: 
+3\. On the next page, click **Remove** and then **Next**. We will configure a cross-account SNS subscription later.
 
-``` arn:aws:sns:us-west-2:011618953130:zombie-workshop ```
-
-Click **Next**.
-
-4\. On the "Configure Function" screen, name your function "[Your CloudFormation Stack Name]-sensor".
+4\. On the "Configure Function" screen, name your function "IoTsensor".
 
 5\. For the **Role**, select the "basic execution role" option or choose an exisitng basic_execution_role if one exists. On the pop-up page asking you to confirm the creation of that role, click **Allow** through that. This role simply allows you to push events to CloudWatch Logs from Lambda.
 
 6\. Leave all other options as default on the Lambda creation page and click **Next**.
 
-7\. On the Review page, select the "Enable Now" radio button under **Enable event source**. This will enable your Lambda function to immediately begin consuming messages. Finally, click **Create function**.
+7\. Click **Create function**.
 
-8\. Once the function is created, on the overview page for your Lambda function, select the **Monitoring** tab and then on the right side select **View logs in CloudWatch**.
+8\. Once the function is created, go to the overview page for your Lambda function.
 
-9\. You should now be on the CloudWatch Logs console page looking at the log streams for your Lambda function.
+9\. You will now need to run some commands to get a cross-account SNS event source working. To do this, you will need to use the ![AWS CLI](https://aws.amazon.com/cli/). If you do not have this installed, please install it before continuing.
 
-10\. As data is sent to the SNS topic, it will trigger your function to consume the messages. The blueprint you used simply logs the message data to CloudWatch Logs. Verify that events are showing up in your CloudWatch Logs stream with Zombie Sensor messages from the Intel Edison. On the **Monitoring** tab for the function (as you did in Step 8), click the link **View logs in CloudWatch**. When you have confirmed that messages from Intel are showing up, now you need to get those alerts into the Chat application for survivors to see!
+10\. Add permission for the SNS topic to invoke your Lambda function:
+
+```aws lambda add-permission --function-name IoTsensor --statement-id sns-x-account --action "lambda:InvokeFunction" --principal sns.amazonaws.com  --source-arn arn:aws:sns:us-west-2:011618953130:zombie-workshop --region us-west-2```
+
+This should return a JSON object showing the policy we applied.
+
+11\. Then set the SNS topic as an event source for your Lambda function:
+
+```aws sns subscribe --topic-arn arn:aws:sns:us-west-2:011618953130:zombie-workshop --protocol lambda --notification-endpoint arn:aws:lambda:us-west-2:<<YOUR_ACCOUNT_ID_HERE>>:function:IoTsensor```
+
+This should return a JSON object showing the subscription to the SNS topic.
+
+12\. Return to the page for your Lambda function and click the Monitoring tab. At the right, click **View logs in CloudWatch**. You should now be on the CloudWatch Logs console page looking at the log streams for your Lambda function.
+
+13\. As data is sent to the SNS topic, it will trigger your function to consume the messages. The blueprint you used simply logs the message data to CloudWatch Logs. Verify that events are showing up in your CloudWatch Logs stream with Zombie Sensor messages from the Intel Edison. On the **Monitoring** tab for the function (as you did in Step 8), click the link **View logs in CloudWatch**. When you have confirmed that messages from Intel are showing up, now you need to get those alerts into the Chat application for survivors to see!
 
 **HINT:** You'll want to edit your Lambda function to communicate with the **/messages** endpoint in API Gateway, which sends the messages to the **Messages** DynamoDB table so that the chat room can see the alerts when Zombies are detected. Modify your Lambda function to finish this section using the skills you've learned so far with Lambda!
 
