@@ -377,7 +377,7 @@ Using the things learned in this workshop, can you develop a Lambda function tha
 
 8\. Once the function is created, go to the overview page for your Lambda function.
 
-9\. You will now need to run some commands to get a cross-account SNS event source working. To do this, you will need to use the ![AWS CLI](https://aws.amazon.com/cli/). If you do not have this installed, please install it before continuing.
+9\. You will now need to run some commands to get a cross-account SNS event source working. To do this, you will need to use the [AWS CLI](https://aws.amazon.com/cli/). If you do not have this installed, please install it before continuing.
 
 10\. Add permission for the SNS topic to invoke your Lambda function:
 
