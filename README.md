@@ -346,24 +346,7 @@ In this section, you'll help protect suvivors from zombies. Zombie motion sensor
 **IoT Integration Architecture**
 ![Zombie Sensor IoT Integration](/Images/EdisonOverview.png)
 
-If you wish to utilize the Zombie Sensor as a part of the workshop, this guide will walk you through the following:
-
-* Items required to create the physical Zombie sensor (Ignore this step if a zombie sensor is provided as a part of an AWS workshop)
-* How to create the AWS backend (Simple Notification Service Topic) for the Zombie Sensor  
-* How to install the Node.js device code provided in this workshop onto the device
-
-**Please note that this section requires an IoT device that can emit messages to SNS. If you are setting this up on your own device outside of the workshop, please proceed through the sections below to do that, otherwise skip the device setup instructions as the device has been setup by AWS for you by the workshop instructor.**
-
-**Items Required**
-
-1\. One Intel® Edison and Grove IoT Starter Kit Powered by AWS. This can be purchased [here](http://www.amazon.com/gp/product/B0168KU5FK?*Version*=1&*entries*=0).  
-2\. Within this starter kit you will be using the following components for this exercise:  
-
-* Intel® Edison for Arduino  
-* Base Shield  
-* USB Cable; 480mm-Black x1  
-* USB Wall Power Supply x1  
-* Grove - PIR Motion Sensor: The application code is a very simple app that publishes a message to an Amazon Simple Notification Service (SNS) topic when motion is detected on the Grove PIR Motion Sensor. For the purpose of a workshop, this should be done only once in a central account by the workshop organizer - the SNS topic will be made public so that participants can subscribe to this topic and make use of it during the workshop.
+**Please note that this section utilizes an IoT device that can emit messages to Amazon SNS. The Intel Edison device has been setup by AWS for you by the workshop instructor. The SNS topic is public so participants can subscribe to this topic and make use of it during the workshop.**
 
 An example output message from the Intel Edison:
 
